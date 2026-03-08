@@ -15,8 +15,8 @@
 		.logo { font-size: 48px; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
 		.lead { color: var(--accent-2); margin-bottom: 0; }
 		.stamp { position:absolute;right:18px;top:18px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);font-size:12px;color:var(--accent-2);backdrop-filter:blur(4px); }
-		.hidden-text { opacity:0; transform:translateY(6px); transition:all 700ms cubic-bezier(.2,.9,.3,1); }
-		.hidden-text.revealed { opacity:1; transform:none; }
+		.hidden-text { opacity:0; transform:translateY(6px); transition:all 700ms cubic-bezier(.2,.9,.3,1); max-height:0; overflow:hidden; }
+		.hidden-text.revealed { opacity:1; transform:none; max-height:1000vh; overflow-y:auto; }
 		.controls { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
 		button { background:transparent; border:1px solid rgba(255,255,255,0.06); padding:10px 14px; border-radius:10px; color:var(--text); cursor:pointer; font-weight:600; backdrop-filter:blur(4px); }
 		button.primary { background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#2b0216; border:none; box-shadow:0 8px 24px rgba(255,107,159,0.14); }
@@ -30,6 +30,23 @@
 		.heart::after { left:0; transform:rotate(-90deg); }
 		@keyframes bloom { to { transform:scale(1); opacity:0.9; } }
 		@media (max-width:520px) { .card{padding:20px;} .logo{width:56px;height:56px;} }
+
+		/* scroll button */
+		#scrollBtn {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background: var(--accent);
+			color: white;
+			border: none;
+			border-radius: 50%;
+			width: 48px;
+			height: 48px;
+			cursor: pointer;
+			font-size: 20px;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+			display: none; /* hidden until confession is revealed */
+		}
 	</style>
 </head>
 <body>
@@ -43,15 +60,14 @@
 		</header>
 		<div class="letter" aria-live="polite">
 			<div class="stamp">Private • Gentle</div>
-			<div id="intro" class="typewriter">To my dearest, Candyce</div>
+			<div id="intro" class="typewriter">pretty girl Axel</div>
 			<div id="confession" class="hidden-text" style="margin-top:18px">
-				<p>I've been carrying this in the quiet corners of my days — little smiles you cause without even trying, and glances replayed in my head like a favorite song.</p>
-				<p>Every time you give me a glance I feel like someone's turned on a light inside me. Maybe it's silly, maybe it's sudden, but it's real: I like you —  more than polite company. I like the way you tilt your head when you're thinking, how you remember tiny details, and the warmth you leave behind even if we're apart.</p>
-				<p> I wanted to tell you honestly, simply, because you deserve the truth.</p>
+				<!-- your very long confession text here -->
+				<p>... ( baho kaykag utot axel hahahahah gwapa kyka hahahah char ) ...</p>
 			</div>
 			<div class="signature">
 				<div>
-					<div class="sig-name">— Someone who cares</div>
+					<div class="sig-name">— emerald</div>
 					<div class="small">(Feel free to respond honestly. I promise to listen.)</div>
 				</div>
 			</div>
@@ -61,10 +77,16 @@
 			<button id="revealBtn" class="primary">Reveal Confession</button>
 		</div>
 	</div>
+
+	<!-- scroll button -->
+	<button id="scrollBtn">↓</button>
+
 	<script>
 		const revealBtn = document.getElementById('revealBtn');
 		const confession = document.getElementById('confession');
 		const hearts = document.getElementById('hearts');
+		const scrollBtn = document.getElementById('scrollBtn');
+
 		function spawnHearts(count=6){
 			hearts.innerHTML='';
 			for(let i=0;i<count;i++){
@@ -77,10 +99,17 @@
 				setTimeout(()=>{h.style.opacity=1;}, 50+i*120)
 			}
 		}
+
 		revealBtn.addEventListener('click',()=>{
 			confession.classList.add('revealed');
 			spawnHearts(8);
 			confession.scrollIntoView({behavior:'smooth',block:'center'});
+			scrollBtn.style.display = 'block'; // show scroll button
+		});
+
+		// scroll button action
+		scrollBtn.addEventListener('click', ()=>{
+			confession.scrollBy({ top: 200, left: 0, behavior: 'smooth' });
 		});
 	</script>
 </body>
